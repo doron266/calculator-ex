@@ -20,7 +20,8 @@ pipeline {
     }
     stage('Deploy to production'){
       when { branch 'dev' }
-      steps { sh 'docker tag dw-cicd-exam/calculator:latest 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest'
+      steps { sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 992382545251.dkr.ecr.us-east-1.amazonaws.com'
+              sh 'docker tag dw-cicd-exam/calculator:latest 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest'
               sh 'docker push 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest' }
    
     }

@@ -17,7 +17,7 @@ pipeline {
       steps { sh 'docker run --name calc -d $IMAGE_NAME sh -c "python -m unittest discover -s tests -v"' }
     }
     stage('HealthChecheck Test') {
-      steps { sh 'docker exec -it calc curl -fsS http://localhost:5000/health' }
+      steps { sh 'docker exec calc curl -fsS http://localhost:5000/health' }
     }
    
       }

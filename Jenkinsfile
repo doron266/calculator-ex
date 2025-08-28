@@ -14,10 +14,10 @@ pipeline {
       steps { sh 'docker build -t $IMAGE_NAME .' }
     }
     stage('Unit Tests') {
-      steps { sh 'docker run --rm $IMAGE_NAME sh -c "python -m unittest discover -s tests -v"' }
+      steps { sh 'docker run -d $IMAGE_NAME --name calc sh -c "python -m unittest discover -s tests -v"' }
     }
     stage('HealthChecheck Test') {
-      steps { sh 'docker run --rm -p 5000:5000 $IMAGE_NAME sh -c "curl -fsS http://localhost:5000/health"' }
+      steps { sh 'docker exec -it calc curl -fsS http://localhost:5000/health' }
     }
    
       }

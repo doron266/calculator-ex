@@ -43,10 +43,9 @@ pipeline {
       when { branch 'main' }
       steps {
         sshagent(credentials: ["$SSH_CREDENTIALS_ID"]) {
-          sh '''
-          [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
-          ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> ~/.ssh/known_hosts
-          ssh -o 'dcoker stop calc; docker run --name calc -d -p 5000:5000 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest' $PRODUCTION_USER@$PRODUCTION_SERVER || echo "command failed"
+          sh '[ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh'
+          sh 'ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> ~/.ssh/known_hosts'
+          sh 'ssh -o "dcoker stop calc && docker run --name calc -d -p 5000:5000 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest" $PRODUCTION_USER@$PRODUCTION_SERVER || echo "command failed" '
              '''
           }
    }

@@ -20,9 +20,10 @@ pipeline {
     }
     stage('Deploy to ECR with the correct tagging'){
       when { changeRequest() }
-      steps { sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 992382545251.dkr.ecr.us-east-1.amazonaws.com'
-              sh 'docker tag dw-cicd-exam/$IMAGE_NAME 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:dev-latest'
-              sh 'docker push 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:dev-latest' }
+      steps { tag = VersionNumber (versionNumberString: 'pr-1.${BUILDS_ALL_TIME}')
+              sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 992382545251.dkr.ecr.us-east-1.amazonaws.com'
+              sh 'docker tag dw-cicd-exam/$IMAGE_NAME 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:$tag'
+              sh 'docker push 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:$tag' }
     }
      stage('Build Image - CD') {
       when { branch 'main' }

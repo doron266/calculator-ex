@@ -5,9 +5,9 @@ pipeline {
     tag = VersionNumber (versionNumberString: 'pr-1.${BUILDS_ALL_TIME}')
     IMAGE_NAME = "calculator"
     FILE_NAME= "Jenkinsfile"
-    DRIVER_NAME = "ours"
-    PUSH_IMAGE = "false"   // set to "true" to push to local registry
-    COMMIT_MASSAGE = "#1"
+    PRODUCTION_SERVER = "10.0.1.110"
+    PRODUCTION_USER = "ec2-user"
+    SSH_CREDENTIALS_ID = "ssh-to-prod-server"
   }
 
   stages {
@@ -39,7 +39,17 @@ pipeline {
               sh 'docker tag dw-cicd-exam/$IMAGE_NAME 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest'
               sh 'docker push 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest' }
     }
-
+    stage('Deploy to production server'){
+      when { branch 'main' }
+      steps {
+        sshagent(credentials: ['$SSH_CREDENTIALS_ID']) {
+          sh '''
+          [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+          ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> ~/.ssh/known_hosts
+          ssh -o 'dcoker stop calc; docker run --name calc -d -p 8080:8080 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest' $PRODUCTION_USER@$PRODUCTION_SERVER 
+             '''
+    }
+}
 
  }
 

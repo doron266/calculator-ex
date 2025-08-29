@@ -42,7 +42,7 @@ pipeline {
     stage('Deploy to production server'){
       when { branch 'main' }
       steps {
-        sshagent(credentials: ['$SSH_CREDENTIALS_ID']) {
+        sshagent(credentials: ["$SSH_CREDENTIALS_ID"]) {
           sh '''
           [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
           ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> ~/.ssh/known_hosts

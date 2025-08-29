@@ -48,9 +48,10 @@ pipeline {
           ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> ~/.ssh/known_hosts
           ssh -o 'dcoker stop calc; docker run --name calc -d -p 8080:8080 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest' $PRODUCTION_USER@$PRODUCTION_SERVER 
              '''
-    }
-}
+          }
+   }
 
  }
 
+}
 }

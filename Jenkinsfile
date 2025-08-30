@@ -47,13 +47,8 @@ pipeline {
              set -euxo pipefail
              mkdir -p ~/.ssh && chmod 700 ~/.ssh
              ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> ~/.ssh/known_hosts
-
-             ssh ec2-user@10.0.1.110 "
-             docker stop calc || true &&
-             docker rm calc || true &&
-             docker run -d -p 5000:5000 --name calc \
-             992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest
-  "
+              # Debug connection first
+             ssh -v ec2-user@10.0.1.110 "echo Connected OK"
             '''
 
 }

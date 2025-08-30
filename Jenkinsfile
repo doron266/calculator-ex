@@ -47,8 +47,12 @@ pipeline {
              mkdir -p $HOME/.ssh && chmod 777 $HOME/.ssh
              ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> $HOME/.ssh/known_hosts
               # Debug connection first
-             ssh ec2-user@10.0.1.110
-            '''
+             ssh ec2-user@10.0.1.110 "
+             docker stop calc || true &&
+             docker rm calc || true &&
+             docker run -d -p 5000:5000 --name calc \
+             992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest
+             '''
 
 }
 }

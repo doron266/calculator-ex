@@ -2,12 +2,12 @@ pipeline {
   agent any
 
   environment {
-    tag = VersionNumber (versionNumberString: 'pr-1.${BUILDS_ALL_TIME}')
+    tag = VersionNumber (versionNumberString: "pr-1.${BUILDS_ALL_TIME}")
     IMAGE_NAME = "calculator"
     FILE_NAME= "Jenkinsfile"
     PRODUCTION_SERVER = "10.0.1.110"
     PRODUCTION_USER = "ec2-user"
-    SSH_CREDENTIALS_ID = "ssh-to-prod-server"
+    SSH_CREDENTIALS_ID = 'ssh-to-prod-server'
   }
 
   stages {

@@ -45,10 +45,13 @@ pipeline {
         sshagent(credentials: ["$SSH_CREDENTIALS_ID"]) {
           sh '''#!/bin/bash
              set -euxo pipefail
+             pwd
+             cd $HOME
+             pwd
              mkdir -p .ssh && chmod 700 .ssh
              ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> .ssh/known_hosts
               # Debug connection first
-             ssh -v ec2-user@10.0.1.110 "echo Connected OK"
+             ssh -v ec2-user@10.0.1.110 "echo ConnectedOK"
             '''
 
 }

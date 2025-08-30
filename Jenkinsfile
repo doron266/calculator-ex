@@ -44,7 +44,7 @@ pipeline {
       steps {
         sshagent(credentials: ["$SSH_CREDENTIALS_ID"]) {
           sh '''#!/bin/bash
-             mkdir -p $HOME/.ssh && chmod 644 $HOME/.ssh
+             mkdir -p $HOME/.ssh && chmod 777 $HOME/.ssh
              ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> $HOME/.ssh/known_hosts
               # Debug connection first
              ssh ec2-user@10.0.1.110

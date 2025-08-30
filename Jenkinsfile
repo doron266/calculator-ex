@@ -47,7 +47,7 @@ pipeline {
             sh '''
              [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
              ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> ~/.ssh/known_hosts
-             ssh -o RemoteCommand='docker stop calc || true && docker rm calc || true && docker run --name calc -d -p 5000:5000 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest' ec2-user@10.0.1.110
+             ssh -i /var/jenkins_home/.ssh/dw_key.pem -o RemoteCommand='docker stop calc || true && docker rm calc || true && docker run --name calc -d -p 5000:5000 992382545251.dkr.ecr.us-east-1.amazonaws.com/dw-cicd-exam/calculator:latest' ec2-user@10.0.1.110
                '''
           }
    }

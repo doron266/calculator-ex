@@ -43,7 +43,7 @@ pipeline {
       when { branch 'main' }
       steps {
         sshagent(credentials: ["$SSH_CREDENTIALS_ID"]) {
-          sh '''
+          sh '''#!/bin/bash
              set -euxo pipefail
              mkdir -p ~/.ssh && chmod 700 ~/.ssh
              ssh-keyscan -t rsa,dsa $PRODUCTION_SERVER >> ~/.ssh/known_hosts
